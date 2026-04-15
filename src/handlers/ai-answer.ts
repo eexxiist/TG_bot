@@ -1,12 +1,22 @@
+import { markdownToHtml } from "../lib/formatMarkdown";
 import { askDeepSeek } from "../services/ai";
 import { BotContext } from "../types/bot-types";
 
-export async function AiAnswerHandler(ctx : BotContext, next: () => Promise<void>){
+export async function AiAnswerHandler(
+    ctx: BotContext,
+    next: () => Promise<void>
+) {
     const message = ctx.message?.text;
 
-    if(!message){
-        return next()
+    if (!ctx.session.waitingForAI) {
+        return next();
     }
+
+    if (!message) {
+        return next();
+    }
+
+    ctx.session.waitingForAI = false;
 
     const thinkingMessage = await ctx.reply("думаю");
 
@@ -16,7 +26,7 @@ export async function AiAnswerHandler(ctx : BotContext, next: () => Promise<void
 
     try {
         const response = await askDeepSeek(message);
-        await ctx.reply(response);
+        await ctx.reply(markdownToHtml(response), {parse_mode: 'HTML'});
     } catch (error) {
         console.log(error);
         await ctx.reply(
@@ -25,4 +35,4 @@ export async function AiAnswerHandler(ctx : BotContext, next: () => Promise<void
     } finally {
         await safeDelete();
     }
-};
+}
