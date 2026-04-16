@@ -6,21 +6,21 @@
 
 ## 🚀 Возможности
 
-* 💬 Ответы на сообщения с помощью AI
-* 🧠 Генерация текста (DeepSeek / OpenAI)
-* 📋 Генерация тестов
-* ℹ️ Справка по командам
-* ☁️ Serverless деплой (Yandex Cloud Functions)
+-   💬 Ответы на сообщения с помощью AI
+-   🧠 Генерация текста (DeepSeek / OpenAI)
+-   📋 Генерация тестов
+-   ℹ️ Справка по командам
+-   ☁️ Serverless деплой (Yandex Cloud Functions)
 
 ---
 
 ## 🛠️ Стек технологий
 
-* Node.js
-* TypeScript
-* [grammy](https://grammy.dev/) — Telegram Bot API
-* Yandex Cloud (Cloud Functions + API Gateway)
-* AI API (DeepSeek / OpenAI)
+-   Node.js
+-   TypeScript
+-   [grammy](https://grammy.dev/) — Telegram Bot API
+-   Yandex Cloud (Cloud Functions + API Gateway)
+-   AI API (DeepSeek / OpenAI)
 
 ---
 
@@ -97,10 +97,9 @@ src/
 
 ## ⚠️ Важно
 
-* В облаке `.env` не используется — переменные задаются через `--environment`
-* Для работы AI нужен активный API ключ
-* При отсутствии баланса API будет возвращать ошибку `402`
-
+-   В облаке `.env` не используется — переменные задаются через `--environment`
+-   Для работы AI нужен активный API ключ
+-   При отсутствии баланса API будет возвращать ошибку `402`
 
 ---
 
