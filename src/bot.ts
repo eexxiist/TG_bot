@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { Bot, session } from "grammy";
 import { BotContext, SessionData } from "./types/bot-types";
 import { startHandler } from "./handlers/start";
@@ -14,19 +13,18 @@ if (!BOT_TOKEN) {
 
 export const bot = new Bot<BotContext>(BOT_TOKEN);
 
-bot.use(session<SessionData, BotContext>({
-    initial: () => ({
-        waitingForAI: false
+bot.use(
+    session<SessionData, BotContext>({
+        initial: () => ({
+            waitingForAI: false,
+        }),
     })
-}))
+);
 
 bot.command("start", startHandler);
+bot.command("ai", AiAnswerHandler);
+bot.command("test", AiAnswerHandler);
 
-bot.hears(Hears.AI_HELPER, (ctx, next) => {
-    ctx.session.waitingForAI = true;
-    ctx.reply("Задайте вопрос");
-});
-bot.hears(Hears.TEST_GENERATOR, AiAnswerHandler);
 bot.hears(Hears.HELP, HelpHandler);
 
 bot.on("message:text", AiAnswerHandler);

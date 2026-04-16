@@ -2,37 +2,23 @@ import { markdownToHtml } from "../lib/formatMarkdown";
 import { askDeepSeek } from "../services/ai";
 import { BotContext } from "../types/bot-types";
 
-export async function AiAnswerHandler(
-    ctx: BotContext,
-    next: () => Promise<void>
-) {
+export async function AiAnswerHandler(ctx: BotContext) {
     const message = ctx.message?.text;
+    if (!message) return;
 
-    if (!ctx.session.waitingForAI) {
-        return next();
-    }
-
-    if (!message) {
-        return next();
-    }
-
-    ctx.session.waitingForAI = false;
-
-    const thinkingMessage = await ctx.reply("думаю");
-
-    const safeDelete = async () => {
-        await ctx.api.deleteMessage(ctx.chat!.id, thinkingMessage.message_id);
-    };
+    console.log("AI HANDLER:", message);
 
     try {
         const response = await askDeepSeek(message);
-        await ctx.reply(markdownToHtml(response), {parse_mode: 'HTML'});
+
+        await ctx.reply(markdownToHtml(response), {
+            parse_mode: "HTML",
+        });
     } catch (error) {
-        console.log(error);
+        console.error("AI ERROR FULL:", error);
+    
         await ctx.reply(
-            "Произошла ошибка при обработке вашего запроса. Попробуйте похже."
+            "Ошибка при обработке запроса: " + (error as Error).message
         );
-    } finally {
-        await safeDelete();
     }
 }
